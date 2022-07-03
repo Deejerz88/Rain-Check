@@ -20,20 +20,19 @@
     </header>
     <div class="row">
       <aside id="search" class="col border form-floating">
-        <input
-          type="text"
-          id="search-input"
-          class="form-control"
-          placeholder="Search City"
-        />
-        <label for="search-input">Search City</label>
+               
       </aside>
-      <div class="col-8 container border">
+      <div id='weather' class="col-8 container border">
         <main id="today" class="row border m-3"></main>
         <section id="forcast" class="border m-3"></section>
       </div>
     </div>
   </body>
+  <script src="./assets/js/config.js"></script>
+  <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZn7-woK1jQZVTbHSLfTZkKVQM20RBQvQ"
+    ></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
