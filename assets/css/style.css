@@ -1,0 +1,27 @@
+body{
+  background: url('../images/meadow.jpg')
+}
+
+#today h2{
+  text-transform: capitalize;
+}
+
+.ui {
+  background: rgba(173, 216, 230, 0.849);
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgb(44, 50, 53)
+}
+
+#forecast{
+  border: 1px solid navy;
+  border-radius:6px;
+  max-width: 95%;
+}
+#forecast h2{
+  font-size: 16pt
+}
+
+#search{
+  display:flex;
+  flex-flow: column;
+}
