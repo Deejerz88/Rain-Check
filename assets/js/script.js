@@ -16,7 +16,7 @@ const background = {
   sunset: "assets/images/sunset.jpg",
 };
 
-let searchHistory = JSON.parse(localStorage.getItem("weatherHistory"));
+let searchHistory = JSON.parse(localStorage.getItem("rainCheck"));
 searchHistory = !!searchHistory ? searchHistory : {};
 console.log(searchHistory);
 
@@ -95,7 +95,7 @@ const getLocation = (e) => {
       res.json().then((data) => {
         const coord = data.results[0].geometry.location;
         searchHistory[location] = coord;
-        localStorage.setItem("weatherHistory", JSON.stringify(searchHistory));
+        localStorage.setItem("rainCheck", JSON.stringify(searchHistory));
         if (tgt[0].id === "searchBtn") addToHistory(location);
         ui.width("1500");
         weather.fadeIn();
