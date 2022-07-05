@@ -13,12 +13,10 @@ let config = {}
 fetch(apiURL).then((res) => {
   if (res.ok)
     res.json().then((data) => {
-      console.log(data)
       config = data;
     });
 });
 
-console.log(config)
 const DateTime = luxon.DateTime;
 const background = {
   clouds: "assets/images/clouds.jpg",
@@ -32,7 +30,6 @@ const background = {
 
 let searchHistory = JSON.parse(localStorage.getItem("rainCheck"));
 searchHistory = !!searchHistory ? searchHistory : {};
-// console.log(searchHistory);
 
 weather.hide();
 ui.width("375");
