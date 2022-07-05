@@ -3,10 +3,7 @@
   --dark: rgba(38, 38, 78)
 }
 
-.dark{
-  background: rgb(38, 38, 78)
-}
-
+/* Header & Title Link */
 header{
   display:flex;
   justify-content: center;
@@ -19,45 +16,18 @@ header{
   color:var(--dark)
 }
 
+a{
+  text-decoration: none;
+}
+
+/* Body */
+
 body {
   background: url("../images/meadow.jpg") center ;
   transition: all .2s ease-in-out;
 }
 
-a{
-  text-decoration: none;
-}
-
-hr{
-  height:1px;
-  width:85%;
-  border-radius: 6px;
-  align-self:center;
-  background-color: var(--dark);
-  opacity: 1;
-}
-#today {
-  border-radius: 6px;
-  background: var(--dark);
-  box-shadow: rgb(44, 50, 53) -5px 5px 10px;
-  color: white;
-  position:relative;
-  top:450px;
-  opacity: 0
-}
-
-.newToday{
-  position:relative;
-  top:450px;
-  /* opacity:0 */
-}
-/* #today h2 {
-  
-} */
-
-#today img{
-  width:150px
-}
+/* UI */
 #ui-container{
   display: flex;
   justify-content: center;
@@ -66,41 +36,49 @@ hr{
   background: var(--light);
   border-radius: 6px;
   box-shadow: 0 0 10px rgb(44, 50, 53);
-  /* width:1500px; */
   text-transform: capitalize;
   opacity: 1;
   transition: all .2s ease-in-out
 }
 
-
-#forecast {
-  color: white;
-  max-width: 97%;
-}
-#forecast h2 {
-  font-size: 16pt;
-}
-
-#forecast section {
-  border-radius: 10px 50px;
-  background: var(--dark);
-  box-shadow: rgb(44, 50, 53) -5px 5px 10px;
-  /* opacity: 0; */
-  transition: all .2s ease-in-out
-}
-
+/* Search */
 #search {
   display: flex;
   flex-flow: column;
 }
 
 #search-input{
-  border: 1px solid grey
+  border: 1px solid darkgrey
 }
 
 #search-input:hover{
   box-shadow: 0 0 3px blue
 }
+
+#searchBtn{
+  transition: all .2s ease-in-out;
+  opacity: 1;
+}
+
+#searchBtn:hover{
+  box-shadow: inset 0 0 3px var(--dark);
+}
+
+#searchBtn:active{
+  transform: scale(.95);
+  box-shadow: inset 0 0 10px var(--dark);
+}
+
+/* History  */
+hr{
+  height:1px;
+  width:85%;
+  border-radius: 6px;
+  align-self:center;
+  background-color: var(--dark);
+  opacity: 1;
+}
+
 #historyBtn{
   box-shadow: 0 0 5px var(--dark);
   transition: all .2s ease-in-out;
@@ -118,20 +96,45 @@ hr{
   box-shadow: 0 0 2px var(--dark)
 }
 
-#searchBtn{
-  transition: all .2s ease-in-out;
-  opacity: 1;
-}
 
-#searchBtn:hover{
-  box-shadow: inset 0 0 3px var(--dark);
-}
-
-#searchBtn:active{
-  transform: scale(.95);
-  box-shadow: inset 0 0 10px var(--dark);
-}
-
+/* Weather */
+/* Today */
 h5{
   display:inline
 }
+
+#today {
+  border-radius: 6px;
+  background: var(--dark);
+  box-shadow: rgb(44, 50, 53) -5px 5px 10px;
+  color: white;
+  position:relative;
+  top:450px;
+  opacity: 0
+}
+
+#today img{
+  width:150px
+}
+
+
+/* Forecast */
+#forecast {
+  color: white;
+  max-width: 97%;
+}
+
+#forecast h2 {
+  font-size: 16pt;
+}
+
+#forecast section {
+  border-radius: 10px 50px;
+  background: var(--dark);
+  box-shadow: rgb(44, 50, 53) -5px 5px 10px;
+  transition: all .2s ease-in-out
+}
+
+
+
+
