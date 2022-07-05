@@ -1,27 +1,65 @@
-body{
-  background: url('../images/meadow.jpg')
+:root {
+  --bg-light: rgba(173, 216, 230, 0.849);
+  --bg-dark: rgb(38, 38, 78)
 }
 
-#today h2{
+.dark{
+  background: rgb(38, 38, 78)
+}
+
+body {
+  background: url("../images/meadow.jpg") center;
+}
+
+#today {
+  border-radius: 6px;
+  background: var(--bg-dark);
+  box-shadow: rgb(44, 50, 53) -5px 5px 10px;
+  color: white;
+  position:relative;
+  top:450px;
+  opacity: 0
+}
+
+.newToday{
+  position:relative;
+  top:450px;
+  /* opacity:0 */
+}
+#today h2 {
   text-transform: capitalize;
 }
 
-.ui {
-  background: rgba(173, 216, 230, 0.849);
-  border-radius: 6px;
-  box-shadow: 0 0 10px rgb(44, 50, 53)
+#today img{
+  width:150px
 }
 
-#forecast{
-  border: 1px solid navy;
-  border-radius:6px;
+#ui {
+  background: var(--bg-light);
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgb(44, 50, 53);
+  height: 825px;
+  width:1500px;
+  
+}
+
+#forecast {
+  color: white;
   max-width: 95%;
 }
-#forecast h2{
-  font-size: 16pt
+#forecast h2 {
+  font-size: 16pt;
 }
 
-#search{
-  display:flex;
+#forecast section {
+  border-radius: 6px;
+  background: var(--bg-dark);
+  box-shadow: rgb(44, 50, 53) -5px 5px 10px;
+  /* opacity: 0; */
+  transition: all .2s ease-in-out
+}
+
+#search {
+  display: flex;
   flex-flow: column;
 }
