@@ -1,19 +1,44 @@
 :root {
-  --bg-light: rgba(173, 216, 230, 0.849);
-  --bg-dark: rgb(38, 38, 78)
+  --light: rgba(173, 216, 230);
+  --dark: rgba(38, 38, 78)
 }
 
 .dark{
   background: rgb(38, 38, 78)
 }
 
-body {
-  background: url("../images/meadow.jpg") center;
+header{
+  display:flex;
+  justify-content: center;
+  width:100vw;
+  background:linear-gradient(60deg, var(--dark), var(--light),rgb(236, 156, 6));
+  box-shadow:  0 0 10px var(--dark);
+  margin-bottom: 20px;
+  text-shadow: 0 0 2px var(--dark);
+  opacity: 0.93;
+  color:var(--dark)
 }
 
+body {
+  background: url("../images/meadow.jpg") center ;
+  transition: all .2s ease-in-out;
+}
+
+a{
+  text-decoration: none;
+}
+
+hr{
+  height:1px;
+  width:85%;
+  border-radius: 6px;
+  align-self:center;
+  background-color: var(--dark);
+  opacity: 1;
+}
 #today {
   border-radius: 6px;
-  background: var(--bg-dark);
+  background: var(--dark);
   box-shadow: rgb(44, 50, 53) -5px 5px 10px;
   color: white;
   position:relative;
@@ -26,34 +51,39 @@ body {
   top:450px;
   /* opacity:0 */
 }
-#today h2 {
-  text-transform: capitalize;
-}
+/* #today h2 {
+  
+} */
 
 #today img{
   width:150px
 }
-
+#ui-container{
+  display: flex;
+  justify-content: center;
+}
 #ui {
-  background: var(--bg-light);
+  background: var(--light);
   border-radius: 6px;
   box-shadow: 0 0 10px rgb(44, 50, 53);
-  height: 825px;
-  width:1500px;
-  
+  /* width:1500px; */
+  text-transform: capitalize;
+  opacity: 1;
+  transition: all .2s ease-in-out
 }
+
 
 #forecast {
   color: white;
-  max-width: 95%;
+  max-width: 97%;
 }
 #forecast h2 {
   font-size: 16pt;
 }
 
 #forecast section {
-  border-radius: 6px;
-  background: var(--bg-dark);
+  border-radius: 10px 50px;
+  background: var(--dark);
   box-shadow: rgb(44, 50, 53) -5px 5px 10px;
   /* opacity: 0; */
   transition: all .2s ease-in-out
@@ -62,4 +92,46 @@ body {
 #search {
   display: flex;
   flex-flow: column;
+}
+
+#search-input{
+  border: 1px solid grey
+}
+
+#search-input:hover{
+  box-shadow: 0 0 3px blue
+}
+#historyBtn{
+  box-shadow: 0 0 5px var(--dark);
+  transition: all .2s ease-in-out;
+  opacity: 1;
+
+}
+
+#historyBtn:hover{
+  box-shadow: 0 0 10px var(--dark);
+  transform: scale(1.05);
+}
+
+#historyBtn:active{
+  transform: scale(1);
+  box-shadow: 0 0 2px var(--dark)
+}
+
+#searchBtn{
+  transition: all .2s ease-in-out;
+  opacity: 1;
+}
+
+#searchBtn:hover{
+  box-shadow: inset 0 0 3px var(--dark);
+}
+
+#searchBtn:active{
+  transform: scale(.95);
+  box-shadow: inset 0 0 10px var(--dark);
+}
+
+h5{
+  display:inline
 }
