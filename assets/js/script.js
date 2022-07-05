@@ -3,8 +3,22 @@ const search = $("#search");
 const today = $("#today");
 const weather = $("#weather");
 const ui = $("#ui");
+const historyEl = $("<section>");
+
 let searchEl;
 
+//Get API Keys from AWS Lambda
+const apiURL = 'https://zx3eyuody3fc25me63au7ukbki0jqehi.lambda-url.us-east-2.on.aws/'
+let config = {}
+fetch(apiURL).then((res) => {
+  if (res.ok)
+    res.json().then((data) => {
+      console.log(data)
+      config = data;
+    });
+});
+
+console.log(config)
 const DateTime = luxon.DateTime;
 const background = {
   clouds: "assets/images/clouds.jpg",
@@ -18,9 +32,7 @@ const background = {
 
 let searchHistory = JSON.parse(localStorage.getItem("rainCheck"));
 searchHistory = !!searchHistory ? searchHistory : {};
-console.log(searchHistory);
-
-const historyEl = $("<section>");
+// console.log(searchHistory);
 
 weather.hide();
 ui.width("375");
@@ -28,12 +40,15 @@ ui.width("375");
 const createSearch = () => {
   //Search Location
   const searchInput = $("<input/>");
-  searchInput
-    .attr({ id: "search-input", placeholder: "Search City", type: "text" })
-    .addClass("form-control mb-3");
   const searchLabel = $("<label/>");
-  searchLabel.attr("for", "search-input").text("Search Location").addClass("m-3");
-  search.append(searchInput).append(searchLabel);
+  searchInput
+    .attr({ id: "search-input", placeholder: "Search Location", type: "text" })
+    .addClass("form-control mb-3");
+  searchLabel
+    .attr("for", "search-input")
+    .text("Search Location")
+    .addClass("m-3");
+  search.append(searchInput, searchLabel);
   searchEl = $("#search-input");
 
   //Get Weather Button
@@ -44,25 +59,20 @@ const createSearch = () => {
     .attr("id", "searchBtn")
     .addClass("btn btn-primary mb-1 align-self-end");
   search.append(searchBtn);
-  const hr = $('<hr>')
-  search.append(hr)
+  const hr = $("<hr>");
+  search.append(hr);
 
   showHistory();
 };
 
 //History
 const showHistory = () => {
-  console.log("showing hisotry");
   let searches = Object.keys(searchHistory);
-  console.log(searches);
-
   historyEl.addClass("container");
   search.append(historyEl);
-  const numShow = 14
+  const numShow = 14;
   let maxHistory = searches.length >= numShow ? -numShow : -searches.length;
-  console.log(maxHistory);
   searches = searches.slice(maxHistory);
-  console.log({ searches });
   searches.forEach((history) => {
     addToHistory(history);
   });
@@ -71,25 +81,23 @@ const showHistory = () => {
 const addToHistory = (history) => {
   const historyBtn = $("<button/>");
   const rowContainer = $("<div>");
-  rowContainer.addClass("row");
-  historyBtn.text(history).click(getLocation).addClass("btn btn-info mb-3");
-  rowContainer.append(historyBtn.attr("id", "historyBtn"));
+  historyBtn
+    .text(history)
+    .click(getLocation)
+    .addClass("btn btn-info mb-3")
+    .attr("id", "historyBtn");
+  rowContainer.addClass("row").append(historyBtn);
   historyEl.append(rowContainer);
 };
 
 //Get Search Coordinates
 const getLocation = (e) => {
   weather.fadeOut();
-  
   const tgt = $(e.target);
-  console.log(tgt);
-  console.log( 'searchEl val',searchEl.val() );
   const location =
     tgt[0].id === "searchBtn" ? searchEl.val() : tgt[0].textContent;
-  console.log(location);
   const apiKey = config.GOOGLE_API;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${apiKey}`;
-  console.log(url);
   fetch(url).then((res) => {
     if (res.ok)
       res.json().then((data) => {
@@ -106,18 +114,10 @@ const getLocation = (e) => {
 
 //Get Weather from Coordinates
 const getWeather = (lat, lon, loc) => {
-  console.log(`getting weather for ${lat},${lon}`);
   let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${config.OW_API}&units=imperial`;
-  console.log(url);
   fetch(url).then((res) => {
     if (res.ok)
       res.json().then((data) => {
-        console.log({ data });
-        // weather.show()
-        // $('#ui-container').css({ 'justify-content': 'start' })
-        
-        
-        // ui.width("375");
         displayWeather(data, loc, today);
       });
   });
@@ -149,47 +149,33 @@ function degToCompass(num) {
 
 //Contruct Weather Modules
 const displayWeather = (data, loc, today) => {
-  // console.log(today);
-  ui.css('opacity', 0.93)
-  
-  today.empty();
-  console.log({ loc });
-  body.attr({'opacity':0})
-
   let id = today.attr("id");
   const timezone = data.timezone;
   const current = id === "today" ? data.current : data;
+  const sunrise = DateTime.fromSeconds(current.sunrise).setZone(timezone);
+  const sunset = DateTime.fromSeconds(current.sunset).setZone(timezone);
   let currentDate = DateTime.fromSeconds(current.dt);
   let fullTime = currentDate.setZone(timezone);
+  let now = fullTime.toLocaleString(DateTime.TIME_SIMPLE);
   let time = currentDate.setZone(timezone).startOf("hour");
-  console.log({ time });
   let date = currentDate.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
   let temp = current.temp.day;
-  const sunrise = DateTime.fromSeconds(current.sunrise)
-    .setZone(timezone)
-    .startOf("hour");
-  const sunset = DateTime.fromSeconds(current.sunset)
-    .setZone(timezone)
-    .startOf("hour");
-  console.log(
-    "sunrise,sunset,time",
-    sunrise.hour,
-    sunset.hour,
-    time.hour
-  );
+  
+  
 
-  // today.addClass("container");
+  ui.css("opacity", 0.93);
 
-  // today.hide()
+  today.empty();
+  body.attr({ opacity: 0 });
+
   //City Title
   const city = $("<h2>");
-  let timeStr = ''
+  let timeStr = "";
+  let sunriseSep = "<br>";
   if (id === "today") {
-    // today.removeAttr('style')
     let weatherType;
-    console.log(time.diff(sunrise,'hours').toObject().hours,'hours from sunrise')
 
-    if (Math.abs(time.hour-sunrise.hour) == 0) {
+    if (Math.abs(time.hour - sunrise.hour) == 0) {
       weatherType = "sunrise";
     } else if (Math.abs(sunset.hour - time.hour) == 0) {
       weatherType = "sunset";
@@ -199,30 +185,33 @@ const displayWeather = (data, loc, today) => {
       weatherType = current.weather[0].main.toString().toLowerCase();
     }
     let bgSrc = background[weatherType];
-    body.css({ "background": `url(${bgSrc}) center` ,'opacity':1});
+    body.css({ background: `url(${bgSrc}) center`, opacity: 1 });
     city.text(`${loc} -- `);
     temp = current.temp;
-    let now = fullTime.toLocaleString(DateTime.TIME_SIMPLE);
     timeStr = `<h5> @ ${now}</h5>`;
+    sunriseSep = " ";
   } else {
     date = date.substring(0, date.lastIndexOf(","));
   }
-  
-  console.log({ timeStr });
+
   city.append(`<i>${date}</i>${timeStr}`);
-  // console.log(city.text())
 
   //Weather Icons
   const icon = current.weather[0].icon;
   const iconEl = $("<img>");
   const desc = current.weather[0].description;
   const descEl = $("<p>");
-  descEl.html(`<i>${desc}</i>`);
+  descEl.html(
+    `<i>${desc}</i><br><i class="fa-solid fa-sun"></i> ${sunrise.toLocaleString(
+      DateTime.TIME_SIMPLE
+    )} ${sunriseSep} <i class="fa-regular fa-sun"></i> ${sunset.toLocaleString(
+      DateTime.TIME_SIMPLE
+    )}`
+  );
   iconEl.attr("src", `http://openweathermap.org/img/wn/${icon}@2x.png`);
 
   //temperature
   const tempEl = $("<p>");
-
   const feelsLike =
     id === "today" ? current.feels_like : current.feels_like.day;
   tempEl.html(
@@ -233,7 +222,6 @@ const displayWeather = (data, loc, today) => {
   const windEl = $("<p>");
   const windSpeed = current.wind_speed;
   const windDeg = current.wind_deg;
-
   const windDir = degToCompass(windDeg);
 
   windEl.html(`<b>Wind:</b> ${windSpeed} MPH <i>${windDir}</i>`);
@@ -248,20 +236,13 @@ const displayWeather = (data, loc, today) => {
   const uvIndex = current.uvi;
   const uviBtn = $("<button>");
   const uvLevels = ["success", "warning", "danger"];
-  uvEl.html(`<b>UV Index:</b> `);
   const uvLevel = uvLevels[Math.min(Math.floor(uvIndex / 4), 2)];
+  uvEl.html(`<b>UV Index:</b> `);
   uviBtn.text(uvIndex).addClass(`btn btn-${uvLevel}`);
-
   uvEl.append(uviBtn);
-  today.append(city);
-  today.append(iconEl);
-  today.append(descEl);
-  today.append(tempEl);
-  today.append(windEl);
-  today.append(humidityEl);
-  today.append(uvEl);
-  
-  
+
+  today.append(city, iconEl, descEl, tempEl, windEl, humidityEl, uvEl);
+
   if (today.attr("id") === "today")
     today.animate(
       {
@@ -277,27 +258,24 @@ const displayWeather = (data, loc, today) => {
 
 //Show Forcast Modules
 const displayForecast = (data, loc) => {
-  let forecast = data.daily;
-  forecast = forecast.splice(1, 5);
-  console.log({ forecast });
   const forecastEl = $("#forecast");
+  const forcastRow = $("<div>");
+  let forecast = data.daily;
+
+  forecast = forecast.splice(1, 5);
+  
   forecastEl.empty();
   forecastEl.addClass("container");
-  console.log({ forecastEl });
-  const forcastRow = $("<div>");
+  
   forcastRow.addClass("row");
-  console.log(forcastRow);
   forecastEl.append(forcastRow);
   forecast.forEach((day, i) => {
-    // console.log(day);
-    const forecastDayEl = $("<section>");
-
-    forecastDayEl.addClass("col m-2 p-2");
-
-    displayWeather(day, loc, forecastDayEl);
-    forcastRow.append(forecastDayEl);
+    const forecastDay = $("<section>");
+    forecastDay.addClass("col m-2 p-2");
+    displayWeather(day, loc, forecastDay);
+    forcastRow.append(forecastDay);
   });
 };
 
-//Initialize Site
+//Initialize Search Box
 createSearch();
