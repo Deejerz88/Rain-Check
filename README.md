@@ -16,6 +16,5 @@ Planning to travel or just curious what the weather is around the world? Find ou
 - 5 Day Forecast displayed underneath with similar information
 - Pages background Changes based on location's current weather conditions
 
-https://deejerz88.github.io/Rain-Check/
 
 <img src='./assets/images/Rain-Check.png'>
